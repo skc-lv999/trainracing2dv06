@@ -11,6 +11,7 @@ export interface PlayerStats {
   derailTimeLeft: number; // time left to re-rail (seconds)
   finished: boolean;     // has crossed finish line
   finishTime?: number;   // race completion time (ms)
+  acquiredTrains: ('yamanote' | 'chuo' | 'shonan')[]; // list of acquired trains
 }
 
 export interface TrackFeature {

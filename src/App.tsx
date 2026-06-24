@@ -9,64 +9,64 @@ import { Trophy, Compass, ShieldAlert, Zap, Award, Train, Users, ShieldAlert as 
 export const getLineConfig = (lineName: 'yamanote' | 'chuo' | 'shonan', stationIdx: number = 0) => {
   if (lineName === 'yamanote') {
     const stations = [
-      { label: "恵比寿駅", start: 670, stop: 700, end: 730 },
-      { label: "渋谷駅", start: 1670, stop: 1700, end: 1730 },
-      { label: "原宿駅", start: 2670, stop: 2700, end: 2730 },
-      { label: "代々木駅", start: 3670, stop: 3700, end: 3730 },
-      { label: "新宿駅", start: 4670, stop: 4700, end: 4730, isTerminal: true },
+      { label: "恵比寿駅", start: 1460, stop: 1500, end: 1540 },
+      { label: "渋谷駅", start: 3460, stop: 3500, end: 3540 },
+      { label: "原宿駅", start: 5460, stop: 5500, end: 5540 },
+      { label: "代々木駅", start: 7460, stop: 7500, end: 7540 },
+      { label: "新宿駅", start: 9460, stop: 9500, end: 9540, isTerminal: true },
     ];
     const st = stations[stationIdx] || stations[stations.length - 1];
     return {
-      trackLength: 5000,
+      trackLength: 10000,
       stationStart: st.start,
       stationStop: st.stop,
       stationEnd: st.end,
       stationLabel: st.label,
       stations,
-      signal1: 1200,
-      signal2: 3200,
-      quotaTime: 230, // Stage quota Time (230s)
+      signal1: 2500,
+      signal2: 6500,
+      quotaTime: 400, // Stage quota Time
     };
   } else if (lineName === 'chuo') {
     const stations = [
-      { label: "三鷹駅", start: 970, stop: 1000, end: 1030 },
-      { label: "吉祥寺駅", start: 2170, stop: 2200, end: 2230 },
-      { label: "西荻窪駅", start: 3370, stop: 3400, end: 3430 },
-      { label: "荻窪駅", start: 4570, stop: 4600, end: 4630 },
-      { label: "高円寺駅", start: 5770, stop: 5800, end: 5830, isTerminal: true },
+      { label: "三鷹駅", start: 1760, stop: 1800, end: 1840 },
+      { label: "吉祥寺駅", start: 3960, stop: 4000, end: 4040 },
+      { label: "西荻窪駅", start: 6160, stop: 6200, end: 6240 },
+      { label: "荻窪駅", start: 8360, stop: 8400, end: 8440 },
+      { label: "高円寺駅", start: 10560, stop: 10600, end: 10640, isTerminal: true },
     ];
     const st = stations[stationIdx] || stations[stations.length - 1];
     return {
-      trackLength: 6100,
+      trackLength: 12000,
       stationStart: st.start,
       stationStop: st.stop,
       stationEnd: st.end,
       stationLabel: st.label,
       stations,
-      signal1: 1500,
-      signal2: 3900,
-      quotaTime: 270, // Stage quota Time (270s)
+      signal1: 3000,
+      signal2: 8000,
+      quotaTime: 450, // Stage quota Time
     };
   } else {
     // shonan
     const stations = [
-      { label: "湘南大磯駅", start: 800, stop: 830, end: 860 },
-      { label: "戸塚駅", start: 2000, stop: 2030, end: 2060 },
-      { label: "大船駅", start: 3200, stop: 3230, end: 3260 },
-      { label: "藤沢駅", start: 4400, stop: 4430, end: 4460 },
-      { label: "茅ヶ崎駅", start: 5600, stop: 5630, end: 5660, isTerminal: true },
+      { label: "湘南大磯駅", start: 1960, stop: 2000, end: 2040 },
+      { label: "戸塚駅", start: 4460, stop: 4500, end: 4540 },
+      { label: "大船駅", start: 6960, stop: 7000, end: 7040 },
+      { label: "藤沢駅", start: 9460, stop: 9500, end: 9540 },
+      { label: "茅ヶ崎駅", start: 11960, stop: 12000, end: 12040, isTerminal: true },
     ];
     const st = stations[stationIdx] || stations[stations.length - 1];
     return {
-      trackLength: 5900,
+      trackLength: 13000,
       stationStart: st.start,
       stationStop: st.stop,
       stationEnd: st.end,
       stationLabel: st.label,
       stations,
-      signal1: 1400,
-      signal2: 3800,
-      quotaTime: 250, // Stage quota Time (250s)
+      signal1: 3500,
+      signal2: 9000,
+      quotaTime: 500, // Stage quota Time
     };
   }
 };
@@ -537,8 +537,9 @@ export default function App() {
   const [activeScreen, setActiveScreen] = useState<"lobby" | "matchmaking" | "racing" | "completed">("lobby");
   const [activeModal, setActiveModal] = useState<"none" | "game_start" | "stage_select" | "train_select" | "ranking" | "options" | "news" | "how_to_play" | "train_encyclopedia">("none");
   const [selectedEncyTrain, setSelectedEncyTrain] = useState<"yamanote" | "chuo" | "shonan">("yamanote");
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState("新米運転士");
   const [selectedLine, setSelectedLine] = useState<'yamanote' | 'chuo' | 'shonan'>('shonan');
+  const [acquiredTrains, setAcquiredTrains] = useState<('yamanote' | 'chuo' | 'shonan')[]>(['shonan']);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [isMuted, setIsMuted] = useState(false);
   const [isLobbyStarted, setIsLobbyStarted] = useState(false);
@@ -1495,7 +1496,7 @@ export default function App() {
           mySpeedRef.current = Math.min(130, Math.max(0, mySpeedRef.current + netAcceleration * dt));
           
           // Update physical side scrolling positions
-          positionGain = (mySpeedRef.current / 3.6) * dt;
+          positionGain = (mySpeedRef.current / 3.6) * dt * 1.5;
           myPositionRef.current += positionGain;
         }
 
@@ -2050,7 +2051,7 @@ export default function App() {
                       <div className="space-y-6">
                         <div className="space-y-2 text-center">
                           <p className="text-sm text-slate-300 font-sans leading-relaxed">
-                            乗務に先立ち、運転指令室に運転士の登録名を入力してください。
+                            乗務に先立ち、運転指令室に運転士の登録名を入力し、路線と車両を選択してください。
                           </p>
                         </div>
 
@@ -2062,27 +2063,11 @@ export default function App() {
                           <input
                             type="text"
                             maxLength={16}
-                            placeholder="例：湘南快速マスター"
+                            placeholder="例：新米運転士"
                             value={nickname}
                             onChange={(e) => setNickname(e.target.value)}
                             className="w-full bg-slate-950 border-2 border-slate-800 rounded-xl px-6 py-4 text-slate-200 font-mono font-bold placeholder-slate-700 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30 transition-all text-center text-xl"
                           />
-                        </div>
-
-                        {/* Selected configuration summary */}
-                        <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-5 flex items-center justify-between">
-                          <div>
-                            <span className="text-xs text-slate-500 block uppercase font-mono">SELECTED DIAL</span>
-                            <span className="font-mono font-bold text-base text-slate-200">
-                              {selectedLine === 'yamanote' ? "山手線 E235系" : selectedLine === 'chuo' ? "中央快速 E233系" : "湘南新宿 E231系"}
-                            </span>
-                          </div>
-                          <div className="text-right">
-                            <span className="text-xs text-slate-500 block uppercase font-mono">TRACK LENGTH</span>
-                            <span className="font-mono font-bold text-base text-indigo-400">
-                              {getLineConfig(selectedLine).trackLength}メートル
-                            </span>
-                          </div>
                         </div>
 
                         {/* Start action launchers */}
@@ -2104,139 +2089,13 @@ export default function App() {
                       </div>
                     )}
 
-                    {/* MODAL: STAGE SELECT */}
-                    {activeModal === "stage_select" && (
-                      <div className="space-y-5">
-                        <p className="text-sm text-slate-300 text-center mb-3 font-sans">
-                          タイムアタックに挑戦する運行路線ダイヤを選択してください。対応車両も自動的に割り当てられます。
-                        </p>
-                        
-                        <div className="flex flex-col gap-4">
-                          {/* Shonan */}
-                          <button
-                            onClick={() => { setSelectedLine('shonan'); playSynthSound('chime'); setActiveModal('none'); }}
-                            className={`flex flex-col md:flex-row items-center justify-between p-6 rounded-2xl border-4 cursor-pointer transition-all text-left ${
-                              selectedLine === 'shonan'
-                                ? 'bg-indigo-950/40 border-emerald-500 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
-                                : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700'
-                            }`}
-                          >
-                            <div className="font-sans">
-                              <span className="text-xs font-bold text-emerald-500 block uppercase font-mono">JR-EAST • LONG SUBURBAN</span>
-                              <span className="text-lg md:text-xl font-black text-slate-100">湘南新宿ライン (Tokaido Line)</span>
-                              <span className="text-sm text-slate-400 block mt-1.5 leading-relaxed">
-                                お馴染み緑とオレンジの湘南色E231系。長い直線区間と大磯駅の正確な制動停止が特徴。
-                              </span>
-                            </div>
-                            <div className="text-right font-mono font-black mt-4 md:mt-0 px-4 py-2 bg-slate-950 border border-slate-800 rounded-lg text-amber-400 text-sm shrink-0 flex flex-col items-end gap-1">
-                              <span>2700メートル</span>
-                              <span className="text-emerald-400 text-xs font-bold font-sans">⏱️ 地形ノルマ: 115.0秒</span>
-                            </div>
-                          </button>
 
-                          {/* Yamanote */}
-                          <button
-                            onClick={() => { setSelectedLine('yamanote'); playSynthSound('chime'); setActiveModal('none'); }}
-                            className={`flex flex-col md:flex-row items-center justify-between p-6 rounded-2xl border-4 cursor-pointer transition-all text-left ${
-                              selectedLine === 'yamanote'
-                                ? 'bg-indigo-950/40 border-lime-500 text-lime-400 shadow-[0_0_15px_rgba(132,204,22,0.2)]'
-                                : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700'
-                            }`}
-                          >
-                            <div className="font-sans">
-                              <span className="text-xs font-bold text-lime-500 block uppercase font-mono">JR-EAST • DENSE LOOP CITY</span>
-                              <span className="text-lg md:text-xl font-black text-slate-100">山手線 (Yamanote Circular)</span>
-                              <span className="text-sm text-slate-400 block mt-1.5 leading-relaxed">
-                                次世代ウグイス色のE235系。駅間距離が最も短く、こまめな加減速と細やかなブレーキ制御が重要。
-                              </span>
-                            </div>
-                            <div className="text-right font-mono font-black mt-4 md:mt-0 px-4 py-2 bg-slate-950 border border-slate-800 rounded-lg text-amber-400 text-sm shrink-0 flex flex-col items-end gap-1">
-                              <span>2100メートル</span>
-                              <span className="text-lime-400 text-xs font-bold font-sans">⏱️ 地形ノルマ: 110.0秒</span>
-                            </div>
-                          </button>
-
-                          {/* Chuo */}
-                          <button
-                            onClick={() => { setSelectedLine('chuo'); playSynthSound('chime'); setActiveModal('none'); }}
-                            className={`flex flex-col md:flex-row items-center justify-between p-6 rounded-2xl border-4 cursor-pointer transition-all text-left ${
-                              selectedLine === 'chuo'
-                                ? 'bg-indigo-950/40 border-red-500 text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.2)]'
-                                : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700'
-                            }`}
-                          >
-                            <div className="font-sans">
-                              <span className="text-xs font-bold text-orange-500 block uppercase font-mono">JR-EAST • RAPID TRUNKWAY</span>
-                              <span className="text-lg md:text-xl font-black text-slate-100">中央快速線 (Chuo Rapid)</span>
-                              <span className="text-sm text-slate-400 block mt-1.5 leading-relaxed">
-                                力強いオレンジデコレーションE233系。最高出力が高く、高速直線を一気に駆け抜ける長距離ダッシュ！
-                              </span>
-                            </div>
-                            <div className="text-right font-mono font-black mt-4 md:mt-0 px-4 py-2 bg-slate-950 border border-slate-800 rounded-lg text-amber-400 text-sm shrink-0 flex flex-col items-end gap-1">
-                              <span>2800メートル</span>
-                              <span className="text-red-400 text-xs font-bold font-sans">⏱️ 地形ノルマ: 125.0秒</span>
-                            </div>
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* MODAL: TRAIN SELECT */}
-                    {activeModal === "train_select" && (
-                      <div className="space-y-6">
-                        <p className="text-sm text-slate-300 text-center font-sans leading-relaxed">
-                          JR東日本の誇るハイテクコミューター列車をタップしてプレビューできます。
-                        </p>
-
-                        <div className="grid grid-cols-3 gap-4">
-                          <button
-                            type="button"
-                            onClick={() => { setSelectedLine('shonan'); playSynthSound('beep'); }}
-                            className={`flex flex-col items-center justify-between p-5 rounded-2xl border-4 font-mono transition-all cursor-pointer ${
-                              selectedLine === 'shonan'
-                                ? 'bg-slate-950 border-emerald-500 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.15)]'
-                                : 'bg-slate-950/40 border-slate-800 text-slate-400 hover:border-slate-700'
-                            }`}
-                          >
-                            <span className="text-xs uppercase font-bold text-slate-500">JR-EAST</span>
-                            <span className="text-sm md:text-base font-black mt-1 text-orange-400">湘南新宿</span>
-                            <span className="text-xs opacity-65 mt-0.5">E231系 (湘南色)</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={() => { setSelectedLine('yamanote'); playSynthSound('beep'); }}
-                            className={`flex flex-col items-center justify-between p-5 rounded-2xl border-4 font-mono transition-all cursor-pointer ${
-                              selectedLine === 'yamanote'
-                                ? 'bg-slate-950 border-lime-500 text-lime-400 shadow-[0_0_10px_rgba(132,204,22,0.15)]'
-                                : 'bg-slate-950/40 border-slate-800 text-slate-400 hover:border-slate-700'
-                            }`}
-                          >
-                            <span className="text-xs uppercase font-bold text-slate-500">JR-EAST</span>
-                            <span className="text-sm md:text-base font-black mt-1 text-lime-400">山手線</span>
-                            <span className="text-xs opacity-65 mt-0.5">E235系 (ウグイス)</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={() => { setSelectedLine('chuo'); playSynthSound('beep'); }}
-                            className={`flex flex-col items-center justify-between p-5 rounded-2xl border-4 font-mono transition-all cursor-pointer ${
-                              selectedLine === 'chuo'
-                                ? 'bg-slate-950 border-red-500 text-red-400 shadow-[0_0_10px_rgba(239,68,68,0.15)]'
-                                : 'bg-slate-950/40 border-slate-800 text-slate-400 hover:border-slate-700'
-                            }`}
-                          >
-                            <span className="text-xs uppercase font-bold text-slate-500">JR-EAST</span>
-                            <span className="text-sm md:text-base font-black mt-1 text-orange-500">中央快速</span>
-                            <span className="text-xs opacity-65 mt-0.5">E233系 (中央色)</span>
-                          </button>
-                        </div>
-
-                        {/* Interactive rolling canvas visualization */}
-                        <div className="bg-slate-950 border border-slate-800 rounded-xl p-6 space-y-4 text-center">
-                          <span className="text-xs font-mono text-indigo-400 block border-b border-slate-800 pb-2 font-bold">
-                            🚈 2D車両精密モデリング・シミュレーター
-                          </span>
+                    {/* MODAL: RANKING */}
+                    {activeModal === "ranking" && (
+                      <div className="space-y-4">
+                        <span className="text-xs font-mono text-indigo-400 block border-b border-slate-800 pb-2 font-bold">
+                          {"🚈"} 2D車両精密モデリング・シミュレーター
+                        </span>
                           <div className="h-28 flex items-center justify-center overflow-hidden bg-slate-900/60 rounded-xl px-4">
                             <TrainVisual speed={45} isPlayer={true} line={selectedLine} />
                           </div>
@@ -2245,6 +2104,34 @@ export default function App() {
                             {selectedLine === 'yamanote' && "【E235系】 現在の山手線の顔であり、正面がスマートフォンを彷彿とさせる未来的デザイン。高密度のATC加減速を得意とする。"}
                             {selectedLine === 'chuo' && "【E233系】 中央特快として、高出力モーターにより一気に時速100キロ以上に到達する頼もしきオレンジの韋駄天。"}
                           </div>
+                        </div>
+                    )}
+
+                    {/* MODAL: TRAIN ENCYCLOPEDIA */}
+                    {activeModal === "train_encyclopedia" && (
+                      <div className="space-y-6">
+                        <p className="text-sm text-slate-300 text-center font-sans">
+                          あなたがこれまでに獲得した車両と、各路線の車両図鑑です。
+                        </p>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          {(['shonan', 'yamanote', 'chuo'] as const).map((line) => (
+                            <div
+                              key={line}
+                              className={`p-4 rounded-xl border-2 flex flex-col items-center gap-2 ${
+                                acquiredTrains.includes(line)
+                                  ? 'bg-slate-950 border-emerald-500'
+                                  : 'bg-slate-900 border-slate-800 opacity-60'
+                              }`}
+                            >
+                              <span className="text-3xl">
+                                {acquiredTrains.includes(line) ? '✅' : '🔒'}
+                              </span>
+                              <span className="text-xs font-black text-slate-200">
+                                {line === 'shonan' ? '湘南新宿 E231' : line === 'yamanote' ? '山手線 E235' : '中央快速 E233'}
+                              </span>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     )}
@@ -2701,7 +2588,7 @@ export default function App() {
           {/* TRACK HUD BAR PANEL */}
           {(() => {
             const lineType = room?.line || 'shonan';
-            const cfg = getLineConfig(lineType);
+            const cfg = getLineConfig(lineType, currentStationIdx);
             const dynamicTrackLength = cfg.trackLength;
             
             return (
