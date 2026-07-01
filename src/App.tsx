@@ -9,52 +9,11 @@ import { Trophy, Compass, ShieldAlert, Zap, Award, Train, Users, ShieldAlert as 
 export const getLineConfig = (lineName: 'yamanote' | 'chuo' | 'shonan', stationIdx: number = 0) => {
   if (lineName === 'yamanote') {
     const stations = [
-      { label: "恵比寿駅", start: 1460, stop: 1500, end: 1540 },
-      { label: "渋谷駅", start: 3460, stop: 3500, end: 3540 },
-      { label: "原宿駅", start: 5460, stop: 5500, end: 5540 },
-      { label: "代々木駅", start: 7460, stop: 7500, end: 7540 },
-      { label: "新宿駅", start: 9460, stop: 9500, end: 9540, isTerminal: true },
-    ];
-    const st = stations[stationIdx] || stations[stations.length - 1];
-    return {
-      trackLength: 10000,
-      stationStart: st.start,
-      stationStop: st.stop,
-      stationEnd: st.end,
-      stationLabel: st.label,
-      stations,
-      signal1: 2500,
-      signal2: 6500,
-      quotaTime: 400, // Stage quota Time
-    };
-  } else if (lineName === 'chuo') {
-    const stations = [
-      { label: "三鷹駅", start: 1760, stop: 1800, end: 1840 },
-      { label: "吉祥寺駅", start: 3960, stop: 4000, end: 4040 },
-      { label: "西荻窪駅", start: 6160, stop: 6200, end: 6240 },
-      { label: "荻窪駅", start: 8360, stop: 8400, end: 8440 },
-      { label: "高円寺駅", start: 10560, stop: 10600, end: 10640, isTerminal: true },
-    ];
-    const st = stations[stationIdx] || stations[stations.length - 1];
-    return {
-      trackLength: 12000,
-      stationStart: st.start,
-      stationStop: st.stop,
-      stationEnd: st.end,
-      stationLabel: st.label,
-      stations,
-      signal1: 3000,
-      signal2: 8000,
-      quotaTime: 450, // Stage quota Time
-    };
-  } else {
-    // shonan
-    const stations = [
-      { label: "湘南大磯駅", start: 1960, stop: 2000, end: 2040 },
-      { label: "戸塚駅", start: 4460, stop: 4500, end: 4540 },
-      { label: "大船駅", start: 6960, stop: 7000, end: 7040 },
-      { label: "藤沢駅", start: 9460, stop: 9500, end: 9540 },
-      { label: "茅ヶ崎駅", start: 11960, stop: 12000, end: 12040, isTerminal: true },
+      { label: "恵比寿駅", englishLabel: "EBISU STATION (Ebisu)", start: 2460, stop: 2500, end: 2540 },
+      { label: "渋谷駅", englishLabel: "SHIBUYA STATION (Shibuya)", start: 4960, stop: 5000, end: 5040 },
+      { label: "原宿駅", englishLabel: "HARAJUKU STATION (Harajuku)", start: 7460, stop: 7500, end: 7540 },
+      { label: "代々木駅", englishLabel: "YOYOGI STATION (Yoyogi)", start: 9960, stop: 10000, end: 10040 },
+      { label: "新宿駅", englishLabel: "SHINJUKU STATION (Shinjuku)", start: 12460, stop: 12500, end: 12540, isTerminal: true },
     ];
     const st = stations[stationIdx] || stations[stations.length - 1];
     return {
@@ -63,10 +22,54 @@ export const getLineConfig = (lineName: 'yamanote' | 'chuo' | 'shonan', stationI
       stationStop: st.stop,
       stationEnd: st.end,
       stationLabel: st.label,
+      stationEnglishLabel: st.englishLabel,
       stations,
-      signal1: 3500,
-      signal2: 9000,
-      quotaTime: 500, // Stage quota Time
+      signal1: 1800 + stationIdx * 2500,
+      signal2: 1800 + stationIdx * 2500 + 400,
+      quotaTime: 650, // Stage quota Time
+    };
+  } else if (lineName === 'chuo') {
+    const stations = [
+      { label: "三鷹駅", englishLabel: "MITAKA STATION (Mitaka)", start: 2960, stop: 3000, end: 3040 },
+      { label: "吉祥寺駅", englishLabel: "KICHIJOJI STATION (Kichijoji)", start: 6460, stop: 6500, end: 6540 },
+      { label: "西荻窪駅", englishLabel: "NISHI-OGIKUBO STATION (Nishi-Ogikubo)", start: 9960, stop: 10000, end: 10040 },
+      { label: "荻窪駅", englishLabel: "OGIKUBO STATION (Ogikubo)", start: 13460, stop: 13500, end: 13540 },
+      { label: "高円寺駅", englishLabel: "KOENJI STATION (Koenji)", start: 16960, stop: 17000, end: 17040, isTerminal: true },
+    ];
+    const st = stations[stationIdx] || stations[stations.length - 1];
+    return {
+      trackLength: 18000,
+      stationStart: st.start,
+      stationStop: st.stop,
+      stationEnd: st.end,
+      stationLabel: st.label,
+      stationEnglishLabel: st.englishLabel,
+      stations,
+      signal1: 2200 + stationIdx * 3500,
+      signal2: 2200 + stationIdx * 3500 + 500,
+      quotaTime: 850, // Stage quota Time
+    };
+  } else {
+    // shonan
+    const stations = [
+      { label: "湘南大磯駅", englishLabel: "SHONAN-OISO STATION (Shonan-Oiso)", start: 3460, stop: 3500, end: 3540 },
+      { label: "戸塚駅", englishLabel: "TOTSUKA STATION (Totsuka)", start: 7460, stop: 7500, end: 7540 },
+      { label: "大船駅", englishLabel: "OFUNA STATION (Ofuna)", start: 11460, stop: 11500, end: 11540 },
+      { label: "藤沢駅", englishLabel: "FUJISAWA STATION (Fujisawa)", start: 15460, stop: 15500, end: 15540 },
+      { label: "茅ヶ崎駅", englishLabel: "CHIGASAKI STATION (Chigasaki)", start: 19460, stop: 19500, end: 19540, isTerminal: true },
+    ];
+    const st = stations[stationIdx] || stations[stations.length - 1];
+    return {
+      trackLength: 21000,
+      stationStart: st.start,
+      stationStop: st.stop,
+      stationEnd: st.end,
+      stationLabel: st.label,
+      stationEnglishLabel: st.englishLabel,
+      stations,
+      signal1: 2700 + stationIdx * 4000,
+      signal2: 2700 + stationIdx * 4000 + 600,
+      quotaTime: 950, // Stage quota Time
     };
   }
 };
@@ -1913,31 +1916,19 @@ export default function App() {
                     <div className="transform skew-x-12 text-xl font-black text-slate-950">▶</div>
                   </button>
 
-                  {/* 2. Stage Select Button */}
+                  {/* 2. Train Encyclopedia Button */}
                   <button 
-                    onClick={() => { playSynthSound('beep'); setActiveModal('stage_select'); }}
-                    className="group relative h-11 sm:h-12 bg-gradient-to-r from-blue-900 via-indigo-800 to-blue-900 border-2 border-blue-500 hover:border-blue-400 text-slate-100 font-sans font-bold text-sm sm:text-base rounded-xl shadow-lg flex items-center justify-between px-6 cursor-pointer transform -skew-x-12 transition-all duration-200 hover:scale-102 active:scale-98"
+                    onClick={() => { playSynthSound('beep'); setActiveModal('train_encyclopedia'); }}
+                    className="group relative h-11 sm:h-12 bg-gradient-to-r from-emerald-900 via-teal-800 to-emerald-900 border-2 border-emerald-500 hover:border-emerald-400 text-slate-100 font-sans font-bold text-sm sm:text-base rounded-xl shadow-lg flex items-center justify-between px-6 cursor-pointer transform -skew-x-12 transition-all duration-200 hover:scale-102 active:scale-98"
                   >
                     <div className="transform skew-x-12 flex items-center gap-3 sm:gap-4">
-                      <span className="text-xl sm:text-2xl">🗺️</span>
-                      <span className="font-extrabold">ステージ選択</span>
+                      <span className="text-xl sm:text-2xl">📖</span>
+                      <span className="font-extrabold">車両図鑑</span>
                     </div>
-                    <div className="transform skew-x-12 text-base font-black text-blue-300">▶</div>
+                    <div className="transform skew-x-12 text-base font-black text-emerald-300">▶</div>
                   </button>
 
-                  {/* 3. Train Select Button */}
-                  <button 
-                    onClick={() => { playSynthSound('beep'); setActiveModal('train_select'); }}
-                    className="group relative h-11 sm:h-12 bg-gradient-to-r from-blue-900 via-indigo-800 to-blue-900 border-2 border-blue-500 hover:border-blue-400 text-slate-100 font-sans font-bold text-sm sm:text-base rounded-xl shadow-lg flex items-center justify-between px-6 cursor-pointer transform -skew-x-12 transition-all duration-200 hover:scale-102 active:scale-98"
-                  >
-                    <div className="transform skew-x-12 flex items-center gap-3 sm:gap-4">
-                      <span className="text-xl sm:text-2xl">🚄</span>
-                      <span className="font-extrabold">車両選択</span>
-                    </div>
-                    <div className="transform skew-x-12 text-base font-black text-blue-300">▶</div>
-                  </button>
-
-                  {/* 4. Ranking Button */}
+                  {/* 3. Ranking Button */}
                   <button 
                     onClick={() => { playSynthSound('beep'); setActiveModal('ranking'); }}
                     className="group relative h-11 sm:h-12 bg-gradient-to-r from-blue-900 via-indigo-800 to-blue-900 border-2 border-blue-500 hover:border-blue-400 text-slate-100 font-sans font-bold text-sm sm:text-base rounded-xl shadow-lg flex items-center justify-between px-6 cursor-pointer transform -skew-x-12 transition-all duration-200 hover:scale-102 active:scale-98"
@@ -1949,7 +1940,7 @@ export default function App() {
                     <div className="transform skew-x-12 text-base font-black text-blue-300">▶</div>
                   </button>
 
-                  {/* 5. Options Button */}
+                  {/* 4. Options Button */}
                   <button 
                     onClick={() => { playSynthSound('beep'); setActiveModal('options'); }}
                     className="group relative h-11 sm:h-12 bg-gradient-to-r from-blue-900 via-indigo-800 to-blue-900 border-2 border-blue-500 hover:border-blue-400 text-slate-100 font-sans font-bold text-sm sm:text-base rounded-xl shadow-lg flex items-center justify-between px-6 cursor-pointer transform -skew-x-12 transition-all duration-200 hover:scale-102 active:scale-98"
@@ -1975,15 +1966,6 @@ export default function App() {
 
                 {/* Announcement & Play Guide Small buttons - Scaled Up for better touch targeting */}
                 <div className="flex gap-5">
-                  {/* Vehicle Encyclopedia */}
-                  <button 
-                    onClick={() => { playSynthSound('beep'); setActiveModal('train_encyclopedia'); }}
-                    className="bg-gradient-to-b from-blue-950 to-indigo-950 hover:brightness-110 border-2 border-emerald-500 rounded-xl px-5 py-4 shadow-lg flex flex-col items-center justify-center gap-2 cursor-pointer w-28 h-28 transition-all font-sans"
-                  >
-                    <span className="text-4xl">📖</span>
-                    <span className="text-[11px] sm:text-xs text-emerald-400 font-black tracking-widest mt-1">車両図鑑</span>
-                  </button>
-
                   {/* News / Notice */}
                   <button 
                     onClick={() => { playSynthSound('beep'); setActiveModal('news'); }}
@@ -2068,6 +2050,72 @@ export default function App() {
                             onChange={(e) => setNickname(e.target.value)}
                             className="w-full bg-slate-950 border-2 border-slate-800 rounded-xl px-6 py-4 text-slate-200 font-mono font-bold placeholder-slate-700 outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500/30 transition-all text-center text-xl"
                           />
+                        </div>
+
+                        {/* SELECT LINE & TRAIN */}
+                        <div className="space-y-3">
+                          <label className="block text-sm font-mono font-black text-emerald-400 tracking-wider">
+                            SELECT LINE & TRAIN / 運行路線・車両選択
+                          </label>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            {[
+                              {
+                                id: 'shonan',
+                                name: '湘南新宿ライン',
+                                desc: 'E231系 (湘南色)',
+                                details: '全5駅（茅ヶ崎まで）の超ロング路線。最高速運転を維持しつつ、安全に運行しよう！',
+                                length: '21000m',
+                                target: '950.0秒',
+                                activeColor: 'bg-emerald-950/40 border-emerald-500 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
+                              },
+                              {
+                                id: 'yamanote',
+                                name: '山手線',
+                                desc: 'E235系 (ウグイス)',
+                                details: '全5駅（新宿まで）の都心路線。こまめな加減速と、ホームと被らない綺麗な速度制限を攻略しよう！',
+                                length: '13000m',
+                                target: '650.0秒',
+                                activeColor: 'bg-lime-950/40 border-lime-500 text-lime-300 shadow-[0_0_15px_rgba(132,204,22,0.2)]'
+                              },
+                              {
+                                id: 'chuo',
+                                name: '中央快速線',
+                                desc: 'E233系 (中央色)',
+                                details: '全5駅（高円寺まで）の直線快速。高出力モーターの加減速性能を活かして駆け抜けよう！',
+                                length: '18000m',
+                                target: '850.0秒',
+                                activeColor: 'bg-red-950/40 border-red-500 text-red-300 shadow-[0_0_15px_rgba(239,68,68,0.2)]'
+                              }
+                            ].map((item) => (
+                              <button
+                                key={item.id}
+                                type="button"
+                                onClick={() => {
+                                  setSelectedLine(item.id as any);
+                                  playSynthSound('chime');
+                                }}
+                                className={`flex flex-col p-4 rounded-xl border-2 text-left transition-all duration-200 cursor-pointer h-full ${
+                                  selectedLine === item.id
+                                    ? item.activeColor
+                                    : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:scale-[1.01]'
+                                }`}
+                              >
+                                <span className="text-[10px] uppercase font-mono tracking-widest text-slate-500 font-bold block mb-1">
+                                  {item.desc}
+                                </span>
+                                <span className="font-sans font-black text-slate-100 text-sm md:text-base block mb-1">
+                                  {item.name}
+                                </span>
+                                <p className="text-slate-400 text-xs leading-snug mb-3 flex-grow">
+                                  {item.details}
+                                </p>
+                                <div className="border-t border-slate-800/80 pt-2 w-full flex items-center justify-between font-mono text-[11px] font-bold">
+                                  <span className="text-amber-400">{item.length}</span>
+                                  <span className="text-slate-500">⏱️ {item.target}</span>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
                         </div>
 
                         {/* Start action launchers */}
@@ -2688,7 +2736,7 @@ export default function App() {
             {/* Station Approaching Overlay Alert */}
             {(() => {
               const lineType = room?.line || 'shonan';
-              const cfg = getLineConfig(lineType);
+              const cfg = getLineConfig(lineType, currentStationIdx);
               const isApproaching = renderStats.myPosition >= (cfg.stationStart - 180) && renderStats.myPosition <= cfg.stationEnd && !myStationCompletedRef.current;
               
               if (!isApproaching) return null;
@@ -2804,7 +2852,7 @@ export default function App() {
             {(() => {
               const elapsedSec = raceStartTimeRef.current ? (Date.now() - raceStartTimeRef.current) / 1000 : 0;
               const lineType = room?.line || 'shonan';
-              const cfg = getLineConfig(lineType);
+              const cfg = getLineConfig(lineType, currentStationIdx);
 
               const s1Red = elapsedSec < 12;
               const s1Yellow = elapsedSec >= 12 && elapsedSec < 18;
@@ -3056,7 +3104,7 @@ export default function App() {
               {/* High-Detail Platform Screen Doors (可動式ホーム柵) Layer - placed in front of train (z-20) */}
               {(() => {
                 const lineType = room?.line || 'shonan';
-                const cfg = getLineConfig(lineType);
+                const cfg = getLineConfig(lineType, currentStationIdx);
                 const stationScrollX = ((cfg.stationStop - renderStats.myPosition) * 4.0) + 120;
                 
                 if (stationScrollX <= -2200 || stationScrollX >= 7500) return null;
@@ -3162,10 +3210,10 @@ export default function App() {
                   <div className="w-full bg-white text-slate-900 border-t-8 border-emerald-600 rounded-lg p-2.5 shadow-md flex flex-col items-center select-none">
                     <div className="text-[10px] text-slate-400 tracking-wider font-sans font-bold">PLATFORM 1 / 1番線ホーム</div>
                     <div className="text-xl font-extrabold font-sans tracking-tight flex items-center gap-2 text-slate-800">
-                      <span>🚉</span> {getLineConfig(activeLineRef.current).stationLabel}
+                      <span>🚉</span> {getLineConfig(activeLineRef.current, currentStationIdxRef.current).stationLabel}
                     </div>
                     <div className="text-[9px] text-slate-500 font-sans tracking-widest font-semibold mt-0.5 uppercase">
-                      {activeLineRef.current === 'yamanote' ? 'EBISU STATION (Ebisu)' : activeLineRef.current === 'chuo' ? 'MITAKA STATION (Mitaka)' : 'SHONAN-OISO STATION (Oiso)'}
+                      {getLineConfig(activeLineRef.current, currentStationIdxRef.current).stationEnglishLabel}
                     </div>
                   </div>
 
@@ -3373,7 +3421,8 @@ export default function App() {
 
             {/* Race Summary Statistics and Solo Time Attack evaluations */}
             {(() => {
-              const cfg = getLineConfig(room.line || "shonan");
+              const lineType = room?.line || "shonan";
+              const cfg = getLineConfig(lineType, 4);
               const isCleared = renderStats.myFinishTime && (renderStats.myFinishTime <= cfg.quotaTime * 1000);
               
               return (
